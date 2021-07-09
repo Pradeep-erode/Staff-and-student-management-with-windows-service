@@ -130,7 +130,7 @@ namespace staffstudent.Resources.staffRepository
         #endregion 
 
         #region Excel upload
-
+        //for oldb error
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public int UploadExclel(IFormFile docs, Fileupload getexcel)
         {
@@ -157,6 +157,7 @@ namespace staffstudent.Resources.staffRepository
 
                 var adapter = new OleDbDataAdapter("SELECT [Student_Roll_no],[Tamil],[English]," +
                     "[Science],[Maths],[Total],[Average] FROM [Sheet1$]", connectionString);
+
                 //adapter.MissingMappingAction = MissingMappingAction.Error;
                 //if (adapter.MissingMappingAction == MissingMappingAction.Error)
                 //{
@@ -174,6 +175,9 @@ namespace staffstudent.Resources.staffRepository
                     foreach (var mark in artistAlbums)
                     {
                         StudentMark markupload = new StudentMark();
+
+                        //Update logic for mark if roll nummber exists in our databse
+
                         var checkforexist = _context.StudentMark.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
                         if (checkforexist != null)
                         {
@@ -188,6 +192,9 @@ namespace staffstudent.Resources.staffRepository
                         }
                         else
                         {
+                            //Add logic for mark if roll number not exists in mark databse and check weather StudentInformation has that roll number
+                            // if StudentInformation does not containt that roll number mark is not added,otherwise mark is added.
+
                             var checkfordetail = _context.StudentInformation.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
                             if (checkfordetail != null)
                             {
