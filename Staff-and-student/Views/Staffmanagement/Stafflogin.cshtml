@@ -1,0 +1,46 @@
+﻿@model staffstudent.Core.staffEntity.Staffcheck
+@{
+    ViewData["Title"] = "Stafflogin";
+}
+
+<h1>Stafflogin</h1>
+
+<body>
+    <div class="container">
+        <div class="row vertical-offset-100">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">  
+                    </div>
+                    <div class="panel-body">
+                        <fieldset>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @using (Html.BeginForm("Stafflogin", "Staffmanagement", FormMethod.Post, new { id = "loginform" }))
+                            {
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Name, new { @id = "admin", @class = "form-control", placeholder = "Username" })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.password, new { @class = "form-control", placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" onclick="SubmitDetails()" class="btn-block btn btn-lg btn-success">Login</button>
+                                </div>
+                            }
+                        </fieldset>
+                        @Html.ActionLink("Back-to main login","Mainpage", "Staffmanagement")
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@if (ViewBag.Credentials != null)
+{
+    <script>
+   alert("@Html.Raw(@ViewBag.Credentials.ToString())");
+    </script>
+}

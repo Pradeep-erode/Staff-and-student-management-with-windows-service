@@ -1,0 +1,148 @@
+﻿@model IEnumerable<staffstudent.Core.staffEntity.StudentInformationEntity>
+
+@{
+    ViewData["Title"] = "Studentdashboard";
+}
+
+<h1>Studentdashboard</h1>
+
+@Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement")
+
+
+<div class="float-right">
+    @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <label>Choose you file</label>
+        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="fileUploadvalidate">
+        <button type="submit" class="btn btn-default btn-lg btn-success">Upload</button>
+    }
+</div>
+
+@Html.ActionLink("Student Mark Page", "StudentmarkShow", "", new { @class = "btn btn-danger btn-block btn-lg" })
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentRollNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dob)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MotherFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MotherLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentContactNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherSContactNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherSOccupation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentRollNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dob)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotherFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotherLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherSContactNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherSOccupation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @if (item.IsMarkadded == true)
+                    {
+                        <label class="text-info">Mark added</label>
+                    }
+                    else
+                    {
+                        <label class="text-warning">Marks not added</label>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "StudentAddandEdit", new { rollno = item.StudentRollNo }, new { @class = "btn btn-warning btn-block btn-lg" })
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "StudentDelete", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-block btn-lg", onclick = "return confirm('Are you want to delete');" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (TempData["ExcelNotify"] != null)
+{
+    <script type="text/javascript">
+        alert("@TempData["ExcelNotify"]");
+    </script>
+}
+@if (TempData["nodataforEdit"] != null)
+{
+    <span class="alert alert-info"> @TempData["nodataforEdit"]</span>
+}
+<div>
+    @Html.ActionLink("back-to-login", "Stafflogin", "Staffmanagement")
+</div>

@@ -1,0 +1,89 @@
+﻿@model staffstudent.Core.staffEntity.StudentInformationEntity
+
+@{
+    ViewData["Title"] = "StudentAddandEdit";
+}
+
+<h1>StudentAddandEdit</h1>
+<div>
+    @Html.ActionLink("Back-to-dashboard", "Studentdashboard", "Staffmanagement")
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            @using (Html.BeginForm("StudentdetailAdd", "Staffmanagement", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <label>Student_Roll_no</label>
+                    @Html.TextBoxFor(m => m.StudentRollNo, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>student_password</label>
+                    @Html.TextBoxFor(m => m.Password, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Student_first_name</label>
+                    @Html.TextBoxFor(m => m.StudentFirstName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Student_last_name</label>
+                    @Html.TextBoxFor(m => m.StudentLastName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <label>Male</label>
+                    @Html.RadioButtonFor(m => m.Gender, "Male")
+                    <label>Female</label>
+                    @Html.RadioButtonFor(m => m.Gender, "Female")
+                </div>
+                <div class="form-group">
+                    <label>Date-of-birth</label>
+                    @Html.TextBoxFor(m => m.Dob, "", new { @class = "form-control", type = "date" })
+                </div>
+                <div class="form-group">
+                    <label>father_first_name</label>
+                    @Html.TextBoxFor(m => m.FatherFirstName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>father_last_name</label>
+                    @Html.TextBoxFor(m => m.FatherLastName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>mother_fist_name</label>
+                    @Html.TextBoxFor(m => m.MotherFirstName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>mother_last_name</label>
+                    @Html.TextBoxFor(m => m.MotherLastName, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Student_contact_no</label>
+                    @Html.TextBoxFor(m => m.StudentContactNo, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Fathers_contact_no</label>
+                    @Html.TextBoxFor(m => m.FatherSContactNo, "", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Fathers_occupation</label>
+                    @Html.TextBoxFor(m => m.FatherSOccupation, "", new { @class = "form-control" })
+                </div>
+
+                <button type="submit" class="btn btn-default btn-lg btn-block btn-success">Submit</button>
+                <button type="reset" class="btn btn-default btn-lg btn-block btn-warning">Reset</button>
+
+             }
+
+        </div>
+    </div>
+ </div>
+    <div>
+        @Html.ActionLink("Back-to-dashboard", "Studentdashboard", "Staffmanagement")
+    </div>
+
+
