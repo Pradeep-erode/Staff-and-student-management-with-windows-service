@@ -99,7 +99,7 @@ namespace staffstudent.Resources.staffRepository
                         updatetask.Email = studentdetail.Email;
                         updatetask.StudentContactNo = studentdetail.StudentContactNo;
                         updatetask.FatherSContactNo = studentdetail.FatherSContactNo;
-                        updatetask.FatherSOccupation = studentdetail.FatherSOccupation;
+                       updatetask.FatherSOccupation = studentdetail.FatherSOccupation;
                         updatetask.UpdatedTimeStamp = DateTime.Now;
                         _context.SaveChanges();
                     }
@@ -138,6 +138,28 @@ namespace staffstudent.Resources.staffRepository
             
             string filename = getexcel.Filename; 
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Root", "Excel", filename);
+
+            //we can also use File to find files here...
+            //we use Directory to find path if not exists it create new folder here...
+            //if (!Directory.Exists(path))
+            //{
+            //    Directory.CreateDirectory(path);
+            //}
+            //else 
+            //{
+            //    Directory.Delete(path);
+            //}
+
+            //check weather File path exists
+            //if (!File.Exists(path))
+            //{
+            //    File.Create(path);
+            //}
+            //else 
+            //{
+            //    File.Delete(path);
+            //}
+
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 docs.CopyToAsync(fileStream);

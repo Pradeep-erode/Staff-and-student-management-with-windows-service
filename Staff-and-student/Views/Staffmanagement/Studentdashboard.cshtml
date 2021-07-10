@@ -3,22 +3,27 @@
 @{
     ViewData["Title"] = "Studentdashboard";
 }
-
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial">
+}
+        <script src="~/js/site.js"></script>
 <h1>Studentdashboard</h1>
 
 @Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement")
 
 
-<div class="float-right">
-    @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div class="float-right pb-3">
+    @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { @id = "formfirst", enctype = "multipart/form-data" }))
     {
         <label>Choose you file</label>
-        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="fileUploadvalidate">
-        <button type="submit" class="btn btn-default btn-lg btn-success">Upload</button>
+        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="UploadedFile" required>
+        <button type="submit" onclick="SubmitDetailsa()" class="btn btn-default btn-lg btn-success">Upload</button>
     }
 </div>
 
 @Html.ActionLink("Student Mark Page", "StudentmarkShow", "", new { @class = "btn btn-danger btn-block btn-lg" })
+        <div>
 <table class="table">
     <thead>
         <tr>
@@ -133,6 +138,7 @@
         }
     </tbody>
 </table>
+            </div>
 @if (TempData["ExcelNotify"] != null)
 {
     <script type="text/javascript">
@@ -146,3 +152,6 @@
 <div>
     @Html.ActionLink("back-to-login", "Stafflogin", "Staffmanagement")
 </div>
+
+
+@*[a - zA - Z0 - 9\s_\\.\-:]) + (.pdf |.tif |.png |.jpg)$*@

@@ -47,14 +47,9 @@ namespace staffstudent.Core.staffEntity
         [Required]
         [StringLength(30)]
         public string FatherSOccupation { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime CreatedTimeStamp { get; set; }
-        public DateTime UpdatedTimeStamp { get; set; }
         [Required]
         public string Password { get; set; }
-
         public bool IsMarkadded { get; set; }
-        public IFormFile Excel { get; set; }
     }
     public class studentcheck
     {

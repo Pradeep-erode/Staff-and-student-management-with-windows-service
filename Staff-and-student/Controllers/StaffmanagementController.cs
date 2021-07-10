@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Staff_and_student.Controllers
@@ -139,10 +140,9 @@ namespace Staff_and_student.Controllers
                 using (var stream = new MemoryStream())
                 {
                     docs.CopyToAsync(stream);
-                    fileupload.filebyte = stream.ToArray();
+                    fileupload.filebyte = stream.ToArray(); 
                 }
                 fileupload.contenttype = docs.ContentType;
-
 
                 if (fileupload.Filename.EndsWith(".xls") || fileupload.Filename.EndsWith(".xlsx"))
                 {
