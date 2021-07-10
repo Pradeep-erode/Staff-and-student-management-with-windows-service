@@ -139,6 +139,7 @@ namespace staffstudent.Resources.staffRepository
             string filename = getexcel.Filename; 
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Root", "Excel", filename);
 
+            #region Find path here-not used now
             //we can also use File to find files here...
             //we use Directory to find path if not exists it create new folder here...
             //if (!Directory.Exists(path))
@@ -159,6 +160,8 @@ namespace staffstudent.Resources.staffRepository
             //{
             //    File.Delete(path);
             //}
+            #endregion
+
 
             using (var fileStream = new FileStream(path, FileMode.Create))
             {
@@ -180,11 +183,6 @@ namespace staffstudent.Resources.staffRepository
                 var adapter = new OleDbDataAdapter("SELECT [Student_Roll_no],[Tamil],[English]," +
                     "[Science],[Maths],[Total],[Average] FROM [Sheet1$]", connectionString);
 
-                //adapter.MissingMappingAction = MissingMappingAction.Error;
-                //if (adapter.MissingMappingAction == MissingMappingAction.Error)
-                //{
-                //    return false;
-                //}
                 var ds = new DataSet();
                 try
                 {
