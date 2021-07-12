@@ -16,5 +16,7 @@ namespace staffstudent.Core.staffEntity
         public int Maths { get; set; }
         public int Total { get; set; }
         public double Average { get; set; }
+        public string Subject { get; set; }
+        public DateTime? ScheduledTime { get; set; }
     }
 }

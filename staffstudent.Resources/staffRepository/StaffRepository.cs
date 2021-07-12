@@ -50,14 +50,11 @@ namespace staffstudent.Resources.staffRepository
                 {
                     StudentInformationEntity studentlist = new();
                     studentlist.StudentRollNo = context.StudentRollNo;
-                    studentlist.StudentFirstName = context.StudentFirstName;
-                    studentlist.StudentLastName = context.StudentLastName;
+                    studentlist.StudentFirstName = context.StudentFirstName + " " + context.StudentLastName;
                     studentlist.Gender = context.Gender;
                     studentlist.Dob = context.Dob;
-                    studentlist.FatherFirstName = context.FatherFirstName;
-                    studentlist.FatherLastName = context.FatherLastName;
-                    studentlist.MotherFirstName = context.MotherFirstName;
-                    studentlist.MotherLastName = context.MotherLastName;
+                    studentlist.FatherFirstName = context.FatherFirstName + " " + context.FatherLastName;
+                    studentlist.MotherFirstName = context.MotherFirstName +" "+ context.MotherLastName;
                     studentlist.Email = context.Email;
                     studentlist.StudentContactNo = context.StudentContactNo;
                     studentlist.FatherSContactNo = context.FatherSContactNo;
@@ -177,11 +174,27 @@ namespace staffstudent.Resources.staffRepository
                 }
                 else if (filename.EndsWith(".xlsx"))
                 {
-                    connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=1\";", path);
+                    connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=0\";", path);
                 }
 
                 var adapter = new OleDbDataAdapter("SELECT [Student_Roll_no],[Tamil],[English]," +
                     "[Science],[Maths],[Total],[Average] FROM [Sheet1$]", connectionString);
+
+                //start
+
+                //var file = new OleDbConnection(connectionString);
+                //file.Open();
+                //var dt = file.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                //if (!dt.Columns.IsSynchronized)
+                //{
+                //    return 3;
+                //}
+                //else
+                //{
+                //    return 1;
+                //}
+                
+                //end
 
                 var ds = new DataSet();
                 try

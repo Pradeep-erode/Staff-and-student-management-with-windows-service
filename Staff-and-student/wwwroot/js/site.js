@@ -13,7 +13,7 @@ function SubmitDetailsa() {
     };
 }
 
-
+//validatoin for adding new student information 
 
 $(function () {
     $("#validatestudent").validate({
@@ -193,5 +193,115 @@ function SubmitDetails() {
     if ($("#validatestudent").validate()) {
 
         $("#validatestudent").submit();
+        
     }
 }
+
+//to make roll number=null when edit
+
+$(function () {
+    if ($("#Rollnum").val() == 0) {
+        $("#Rollnum").val("");
+    }
+});
+
+
+//validation for Studentlogin
+
+$(function () {
+    $("#loginforma").validate({
+        rules:
+        {
+            StudentRollNo:
+            {
+                required: true,
+                maxlength: 4,
+                number: true
+            },
+            Password:
+            {
+                required: true,
+                maxlength: 4,
+                number: true
+
+            }
+        },
+        messages:
+        {
+            StudentRollNo:
+            {
+                required: "Student roll number is Required...",
+                maxlength:"Roll number must be between 1000 to 9999",
+                number: "Enter number only..."
+
+            },
+            Password:
+            {
+                required: "Password is required",
+                maxlength: "maximum 4 digit only...",
+                number: "Password accepted in number only"
+            }
+        }
+    });
+});
+function Studentcheck() {
+
+    if ($("#loginforma").validate()) {
+
+        $("#loginforma").submit();
+
+    }
+}
+
+
+//validation for Stafflogin
+
+$(function () {
+    $("#stafflogin").validate({
+        rules:
+        {
+            Name:
+            {
+                required: true
+            },
+            password:
+            {
+                required: true,
+                maxlength: 4,
+                number: true
+
+            }
+        },
+        messages:
+        {
+            Name:
+            {
+                required: "Enter staff name to login...",
+            },
+            password:
+            {
+                required: "Password is required",
+                maxlength: "maximum 4 digit only...",
+                number: "Password accepted in number only"
+            }
+        }
+    });
+});
+function StaffDetails() {
+
+    if ($("#stafflogin").validate()) {
+
+        $("#stafflogin").submit();
+
+    }
+}
+
+//for loading logo which is used in Layout
+
+$("#btnsubmit").click(function () {
+    $('.spin').css('display', 'block');
+});
+
+$("#updatespin").click(function () {
+    $('.spincenter').css('display', 'block');
+});

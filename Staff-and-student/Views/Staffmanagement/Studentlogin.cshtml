@@ -1,52 +1,62 @@
-﻿@model staffstudent.Core.staffEntity.studentcheck
-@{
-    ViewData["Title"] = "Studentlogin";
-}
+﻿<div class="container">
+    @model staffstudent.Core.staffEntity.studentcheck
+    @{
+        ViewData["Title"] = "Studentlogin";
+    }
+    @section Scripts
+    {
+        <partial name="_ValidationScriptsPartial">
+    }
 
-<h1>Studentlogin</h1>
+    <script src="~/js/site.js"></script>
 
-<body>
-    <div class="container">
-        <div class="row vertical-offset-100">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+    <h5>Studentlogin</h5>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <body>
+        <div class="container">
+            <div class="row vertical-offset-100">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        </div>
+                        <div class="panel-body">
+                            <fieldset>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @using (Html.BeginForm("Studentlogin", "Staffmanagement", FormMethod.Post, new { id = "loginforma" }))
+                                {
+                                    <div class="form-group">
+                                        <i class="fa fa-graduation-cap fa-2x" aria-hidden="true"></i>
+                                        @Html.TextBoxFor(m => m.StudentRollNo, new { @id = "admin", @class = "form-control", placeholder = "Roll number" })
+                                        @Html.ValidationMessageFor(m => m.StudentRollNo, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" onclick="Studentcheck()" id="btnsubmit" class="btn-block btn btn-lg btn-success">Login</button>
+                                    </div>
+                                }
+                            </fieldset>
+                            @Html.ActionLink("Back-to main-login", "Mainpage", "Staffmanagement")
+                        </div>
+
                     </div>
-                    <div class="panel-body">
-                        <fieldset>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @using (Html.BeginForm("Studentlogin","Staffmanagement",FormMethod.Post, new { id = "loginform" }))
-                            {
-                                <div class="form-group">
-                                    @Html.TextBoxFor(m => m.StudentRollNo, new { @id = "admin", @class = "form-control", placeholder = "Roll number" })
-                                    @Html.ValidationMessageFor(m => m.StudentRollNo, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group">
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
-                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" onclick="SubmitDetails()" class="btn-block btn btn-lg btn-success">Login</button>
-                                </div>
-                            }
-                        </fieldset>
-                        @Html.ActionLink("Back-to main-login", "Mainpage", "Staffmanagement")
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
-</body>
-@if (TempData["Wrongcredential"] != null)
-{
-    <script>
+    </body>
+    @if (TempData["Wrongcredential"] != null)
+    {
+        <script>
    alert("@Html.Raw(@TempData["Wrongcredential"].ToString()) ");
-    </script>
-}
-@if (TempData["nomarklist"] != null)
-{
-    <script>
+        </script>
+    }
+    @if (TempData["nomarklist"] != null)
+    {
+        <script>
         alert("@TempData["nomarklist"]");
         </script>
-}
+    }
+</div>

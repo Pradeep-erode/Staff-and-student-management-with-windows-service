@@ -25,7 +25,6 @@ namespace staffstudent.Entities
                 optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Staffmanagement");
             }
         }
-
         public virtual DbSet<StudentInformation> StudentInformation { get; set; }
         public virtual DbSet<StudentMark> StudentMark { get; set; }
 

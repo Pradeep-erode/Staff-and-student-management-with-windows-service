@@ -1,16 +1,15 @@
-﻿
+﻿<div class="container">
+    <h5>Please Sign In</h5>
+    <div class="container">
+        <div class="row vertical-offset-100">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
 
-<h3>Please Sign In</h3>
-<div class="container">
-    <div class="row vertical-offset-100">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-
-                </div>
-                <div class="panel-body">
-                    <form accept-charset="UTF-8" role="form">
+                    </div>
+                    <div class="panel-body">
                         <fieldset>
+
                             <div class="form-group">
                                 @Html.ActionLink("Staff login", "Stafflogin", "Staffmanagement", new { }, new { @class = "form-control btn btn-primary btn-lg btn-block" })
                             </div>
@@ -18,10 +17,10 @@
                                 @Html.ActionLink("Student login", "Studentlogin", "Staffmanagement", new { }, new { @class = "form-control btn btn-primary btn-lg btn-block" })
                             </div>
                         </fieldset>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@Html.ActionLink("Back-to main-login", "Studentdashboard", "Staffmanagement")
+
+    </div>

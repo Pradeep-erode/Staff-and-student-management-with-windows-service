@@ -22,6 +22,7 @@ namespace staffstudent.Core.staffEntity
         public string Gender { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Dob { get; set; }
         [Required]
         [StringLength(40)]

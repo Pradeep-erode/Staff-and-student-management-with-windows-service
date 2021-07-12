@@ -8,66 +8,64 @@
     <partial name="_ValidationScriptsPartial">
 }
         <script src="~/js/site.js"></script>
-<h1>Studentdashboard</h1>
+<h5>Studentdashboard</h5>
 
-@Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement")
+@Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement",new { },new { @class="btn btn-primary btn-lg"})
 
 
-<div class="float-right pb-3">
+<div class="form-group float-right pb-3">
     @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { @id = "formfirst", enctype = "multipart/form-data" }))
     {
         <label>Choose you file</label>
-        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="UploadedFile" required>
+        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="UploadedFile" required style="color: darkred;">
         <button type="submit" onclick="SubmitDetailsa()" class="btn btn-default btn-lg btn-success">Upload</button>
     }
 </div>
 
-@Html.ActionLink("Student Mark Page", "StudentmarkShow", "", new { @class = "btn btn-danger btn-block btn-lg" })
-        <div>
+@Html.ActionLink("Student Mark Page", "StudentmarkShow", new { }, new { @class = "btn btn-secondary btn-lg" })
+        <div class="flex-lg-row">
+            <div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StudentRollNo)
+                Student Roll no
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StudentFirstName)
+                Student Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StudentLastName)
+                Gender
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+               DOB
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Dob)
+               Fathers Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FatherFirstName)
+               Mothers Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FatherLastName)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MotherFirstName)
+                Students Contact
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MotherLastName)
+                Fathers Contact
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Fathers Occupation
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StudentContactNo)
+                Student Password
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FatherSContactNo)
+                <label>Marks</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FatherSOccupation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
+                <label>Actions</label>
             </th>
             <th></th>
         </tr>
@@ -75,69 +73,64 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StudentRollNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StudentFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StudentLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Dob)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FatherFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FatherLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MotherFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MotherLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StudentContactNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FatherSContactNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FatherSOccupation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td>
-                    @if (item.IsMarkadded == true)
-                    {
-                        <label class="text-info">Mark added</label>
-                    }
-                    else
-                    {
-                        <label class="text-warning">Marks not added</label>
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "StudentAddandEdit", new { rollno = item.StudentRollNo }, new { @class = "btn btn-warning btn-block btn-lg" })
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "StudentDelete", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-block btn-lg", onclick = "return confirm('Are you want to delete');" })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentRollNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FatherFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotherFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentContactNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FatherSContactNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FatherSOccupation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @if (item.IsMarkadded == true)
+                {
+                    <label class="text-info">Added</label>
+                }
+                else
+                {
+                    <label class="text-warning">Not added</label>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "StudentAddandEdit", new { rollno = item.StudentRollNo }, new { @class = "btn btn-warning btn-block btn-lg" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "StudentDelete", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-block btn-lg", onclick = "return confirm('Are you want to delete');" })
+            </td>
+            <td>
+                @Html.ActionLink("Schedule Test", "ScheduleTest", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-lg"})
+            </td>
+        </tr>
         }
     </tbody>
 </table>
+                </div>
             </div>
 @if (TempData["ExcelNotify"] != null)
 {
@@ -149,9 +142,4 @@
 {
     <span class="alert alert-info"> @TempData["nodataforEdit"]</span>
 }
-<div>
-    @Html.ActionLink("back-to-login", "Stafflogin", "Staffmanagement")
-</div>
-
-
 @*[a - zA - Z0 - 9\s_\\.\-:]) + (.pdf |.tif |.png |.jpg)$*@

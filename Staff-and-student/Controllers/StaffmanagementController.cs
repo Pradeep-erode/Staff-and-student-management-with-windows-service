@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LamarCodeGeneration.Frames;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using staffstudent.Core.staffEntity;
@@ -39,6 +40,7 @@ namespace Staff_and_student.Controllers
         {
             if (staffcheck.Name == "pradeep" && staffcheck.password == 1234)
             {
+                HttpContext.Session.SetString("credential", staffcheck.Name);
                 return RedirectToAction("Studentdashboard");
             }
             else
@@ -71,6 +73,7 @@ namespace Staff_and_student.Controllers
                         var individualdata = result.Content.ReadAsAsync<StudentMarkEntity>();
                         individualdata.Wait();
 
+                        HttpContext.Session.SetString("cred", "Student");
                         markdata = individualdata.Result;
                         return RedirectToAction("singlestudentmark", markdata);
                     }
@@ -101,24 +104,44 @@ namespace Staff_and_student.Controllers
         #region student list dashhboard
         public ActionResult Studentdashboard()
         {
-            using (var client = new HttpClient())
-            {
-                List<StudentInformationEntity> studentlist = new List<StudentInformationEntity>();
-                client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
-                var gettask = client.GetAsync("Getstudentlist");
-                gettask.Wait();
+            if (HttpContext.Session.GetString("credential") !=null)
+                {
+                using (var client = new HttpClient())
+                {
+                    List<StudentInformationEntity> studentlist = new List<StudentInformationEntity>();
+                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
+                    var gettask = client.GetAsync("Getstudentlist");
+                    gettask.Wait();
 
-                var result = gettask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var studentdetail = result.Content.ReadAsStringAsync().Result;
-                    studentlist = JsonConvert.DeserializeObject<List<StudentInformationEntity>>(studentdetail);
-                    return View(studentlist);
+                    var result = gettask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var studentdetail = result.Content.ReadAsStringAsync().Result;
+                        studentlist = JsonConvert.DeserializeObject<List<StudentInformationEntity>>(studentdetail);
+                        return View(studentlist);
+                    }
+                    else
+                    {
+                        return View();
+                    }
                 }
-                else
-                {
-                    return View();
-                }
+            }
+            else { return RedirectToAction("Stafflogin"); }
+        }
+        #endregion
+
+        #region schedule Email
+        public ActionResult ScheduleTest(int rollno)
+        {
+            if (HttpContext.Session.GetString("credential") != null)
+            {
+                StudentMarkEntity markmodel = new StudentMarkEntity();
+                markmodel.Student_Roll_no = rollno;
+                return View(markmodel);
+            }
+            else
+            {
+                return RedirectToAction("Stafflogin");
             }
         }
         #endregion
@@ -128,92 +151,107 @@ namespace Staff_and_student.Controllers
         [HttpPost]
         public ActionResult Excelupload()
         {
-            IFormFile docs = Request.Form.Files["UploadedFile"];
-
-            if (docs != null)
+            if (HttpContext.Session.GetString("credential") != null)
             {
-                Fileupload fileupload = new Fileupload();
+                IFormFile docs = Request.Form.Files["UploadedFile"];
 
-                string filename = Path.GetFileNameWithoutExtension(docs.FileName);
-                string extension = Path.GetExtension(docs.FileName);
-                fileupload.Filename = filename + extension;
-                using (var stream = new MemoryStream())
+                if (docs != null)
                 {
-                    docs.CopyToAsync(stream);
-                    fileupload.filebyte = stream.ToArray(); 
-                }
-                fileupload.contenttype = docs.ContentType;
+                    Fileupload fileupload = new Fileupload();
 
-                if (fileupload.Filename.EndsWith(".xls") || fileupload.Filename.EndsWith(".xlsx"))
-                {
-                    using (var client = new HttpClient())
+                    string filename = Path.GetFileNameWithoutExtension(docs.FileName);
+                    string extension = Path.GetExtension(docs.FileName);
+                    fileupload.Filename = filename + extension;
+                    using (var stream = new MemoryStream())
                     {
-                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/UploadExclel");
-                        var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload);
-                        Posttask.Wait();
-                        var checkresult = Posttask.Result;
-                        if (checkresult.IsSuccessStatusCode)
-                        {
-                            return RedirectToAction("StudentmarkShow");
-                        }
-                        else if (checkresult.ReasonPhrase.Equals("Expectation Failed"))
-                        {
-                            TempData["ExcelNotify"] = "Some of the student Is not in student detail please update student detail first...";
-                            return RedirectToAction("Studentdashboard");
-                        }
-                        
-                        else if (checkresult.ReasonPhrase.Equals("Conflict"))
-                        {
-                            TempData["ExcelNotify"] = "Please check Excel file..Column should be not null...";
-                            return RedirectToAction("Studentdashboard");
-                        }
-                        else if (checkresult.ReasonPhrase.Equals("Not Found"))
-                        {
-                            TempData["ExcelNotify"] = "connection To API failed...";
-                            return RedirectToAction("Studentdashboard");
-                        }
+                        docs.CopyToAsync(stream);
+                        fileupload.filebyte = stream.ToArray();
                     }
+                    fileupload.contenttype = docs.ContentType;
 
+                    if (fileupload.Filename.EndsWith(".xls") || fileupload.Filename.EndsWith(".xlsx"))
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/UploadExclel");
+                            var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload);
+                            Posttask.Wait();
+                            var checkresult = Posttask.Result;
+                            if (checkresult.IsSuccessStatusCode)
+                            {
+                                return RedirectToAction("StudentmarkShow");
+                            }
+                            else if (checkresult.ReasonPhrase.Equals("Expectation Failed"))
+                            {
+                                TempData["ExcelNotify"] = "Some of the student Is not in student detail please update student detail first...";
+                                return RedirectToAction("Studentdashboard");
+                            }
+
+                            else if (checkresult.ReasonPhrase.Equals("Conflict"))
+                            {
+                                TempData["ExcelNotify"] = "Please check Excel file..Column should be not null...";
+                                return RedirectToAction("Studentdashboard");
+                            }
+                            else if (checkresult.ReasonPhrase.Equals("Not Found"))
+                            {
+                                TempData["ExcelNotify"] = "connection To API failed...";
+                                return RedirectToAction("Studentdashboard");
+                            }
+                        }
+
+                    }
+                    TempData["ExcelNotify"] = "select Excel File only";
+                    return RedirectToAction("Studentdashboard");
                 }
-                TempData["ExcelNotify"] = "select Excel File only";
+                TempData["ExcelNotify"] = "Please select file to upload";
                 return RedirectToAction("Studentdashboard");
             }
-            TempData["ExcelNotify"] = "Please select file to upload";
-            return RedirectToAction("Studentdashboard");
+            else
+            {
+                return RedirectToAction("Stafflogin");
+            }
         }
         #endregion
 
         #region student detail add and Edit page
         public ActionResult StudentAddandEdit(int rollno)
         {
-            if (rollno > 0)
+            if (HttpContext.Session.GetString("credential") != null)
             {
-               
-                using (var client = new HttpClient())
+                StudentInformationEntity studentdata = new StudentInformationEntity();
+                if (rollno > 0)
                 {
-                    StudentInformationEntity studentdata = new StudentInformationEntity();
 
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Getstudentbyrollno/");
-                    var getforedit = client.GetAsync("?rollno=" + rollno);
-                    getforedit.Wait();
-                    var result = getforedit.Result;
-                    if (result.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        var editdata = result.Content.ReadAsAsync<StudentInformationEntity>();
-                        editdata.Wait();
 
-                        studentdata = editdata.Result;
-                        return View(studentdata);
+
+                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Getstudentbyrollno/");
+                        var getforedit = client.GetAsync("?rollno=" + rollno);
+                        getforedit.Wait();
+                        var result = getforedit.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var editdata = result.Content.ReadAsAsync<StudentInformationEntity>();
+                            editdata.Wait();
+
+                            studentdata = editdata.Result;
+                            return View(studentdata);
+                        }
+                        else
+                        {
+                            TempData["nodataforEdit"] = "No data for Edit";
+                            return RedirectToAction("Studentdashboard");
+                        }
                     }
-                    else
-                    {
-                        TempData["nodataforEdit"] = "No data for Edit";
-                        return RedirectToAction("Studentdashboard");
-                    }
+
                 }
-
+                return View(studentdata);
             }
-            return View();
+            else
+            {
+                return RedirectToAction("Stafflogin");
+            }
         }
         #endregion
 
@@ -221,21 +259,28 @@ namespace Staff_and_student.Controllers
         [HttpPost]
         public ActionResult StudentdetailAdd(StudentInformationEntity studentinfo)
         {
-            using (var client = new HttpClient())
+            if (HttpContext.Session.GetString("credential") != null)
             {
-                client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Addstudentdetail/");
-                var Posttask = client.PostAsJsonAsync(client.BaseAddress, studentinfo);
-                Posttask.Wait();
-                var checkresult = Posttask.Result;
-                if (checkresult.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    return RedirectToAction("Studentdashboard");
+                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Addstudentdetail/");
+                    var Posttask = client.PostAsJsonAsync(client.BaseAddress, studentinfo);
+                    Posttask.Wait();
+                    var checkresult = Posttask.Result;
+                    if (checkresult.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Studentdashboard");
+                    }
+                    else
+                    {
+                        TempData["nodata"] = "please fill the form to continue";
+                        return RedirectToAction("StudentAddandEdit");
+                    }
                 }
-                else
-                {
-                    TempData["nodata"] = "please fill the form to continue";
-                    return RedirectToAction("StudentAddandEdit");
-                }
+            }
+            else
+            {
+                return RedirectToAction("Stafflogin");
             }
 
         }
@@ -244,25 +289,32 @@ namespace Staff_and_student.Controllers
         #region all Student mark list page
         public ActionResult StudentmarkShow()
         {
-            using (var client = new HttpClient())
+            if (HttpContext.Session.GetString("credential") != null)
             {
-                List<StudentMarkEntity> markadd = new List<StudentMarkEntity>();
+                using (var client = new HttpClient())
+                {
+                    List<StudentMarkEntity> markadd = new List<StudentMarkEntity>();
 
-                client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
-                var getforedit = client.GetAsync("GetstudentMarkList");
-                getforedit.Wait();
-                var checkresult = getforedit.Result;
-                if (checkresult.IsSuccessStatusCode)
-                {
-                    var getmark = checkresult.Content.ReadAsStringAsync().Result;
-                    markadd = JsonConvert.DeserializeObject<List<StudentMarkEntity>>(getmark);
-                    return View(markadd);
+                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
+                    var getforedit = client.GetAsync("GetstudentMarkList");
+                    getforedit.Wait();
+                    var checkresult = getforedit.Result;
+                    if (checkresult.IsSuccessStatusCode)
+                    {
+                        var getmark = checkresult.Content.ReadAsStringAsync().Result;
+                        markadd = JsonConvert.DeserializeObject<List<StudentMarkEntity>>(getmark);
+                        return View(markadd);
+                    }
+                    else
+                    {
+                        TempData["nomarklist"] = "Please Contact Admin...";
+                        return RedirectToAction("Studentlogin");
+                    }
                 }
-                else
-                {
-                    TempData["nomarklist"] = "Please Contact Admin...";
-                    return RedirectToAction("Studentlogin");
-                }
+            }
+            else
+            {
+                return RedirectToAction("Stafflogin");
             }
         }
 
@@ -271,37 +323,60 @@ namespace Staff_and_student.Controllers
         #region Individual mark
         public ActionResult singlestudentmark(StudentMarkEntity markdata)
         {
-            return View(markdata);
+            if (HttpContext.Session.GetString("cred") != null)
+            {
+                return View(markdata);
+            }
+            else
+            {
+                return RedirectToAction("Stafflogin");
+            }
+            
         }
         #endregion
 
         #region  student mark and information delete logic
         public ActionResult StudentDelete(int rollno)
         {
-            if (rollno == 0)
+            if (HttpContext.Session.GetString("credential") != null)
             {
-                return RedirectToAction("Studentdashboard");
-            }
-            else
-            {
-                using (var client = new HttpClient())
+                if (rollno == 0)
                 {
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Deletestudentbyrollno/");
-                    var deletetask = client.DeleteAsync("?rollno=" + rollno);
-                    deletetask.Wait();
+                    return RedirectToAction("Studentdashboard");
+                }
+                else
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Deletestudentbyrollno/");
+                        var deletetask = client.DeleteAsync("?rollno=" + rollno);
+                        deletetask.Wait();
 
-                    var result = deletetask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Studentdashboard");
-                    }
-                    else
-                    {
-                        ViewBag.APIerror = true;
-                        return RedirectToAction("Studentdashboard");
+                        var result = deletetask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Studentdashboard");
+                        }
+                        else
+                        {
+                            ViewBag.APIerror = true;
+                            return RedirectToAction("Studentdashboard");
+                        }
                     }
                 }
             }
+            else
+            {
+                return RedirectToAction("Stafflogin");
+            }
+        }
+        #endregion
+
+        #region Logout
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Mainpage");
         }
         #endregion
 
