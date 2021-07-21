@@ -6,6 +6,7 @@ using staffstudent.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace staffstudent.Resources.staffRepository
 {
-    public class StaffRepository: IRepositoryStaff
+    public class StaffRepository : IRepositoryStaff
     {
         #region Student login check
         public StudentMarkEntity Studentcheck(int roll, string password)
@@ -22,9 +23,9 @@ namespace staffstudent.Resources.staffRepository
             StudentMarkEntity markadd = new StudentMarkEntity();
             using (var _context = new StaffmanagementContext())
             {
-                var studetcheck = _context.StudentInformation.Where(m => m.StudentRollNo == roll && m.Password== password).SingleOrDefault();
+                var studetcheck = _context.StudentInformation.Where(m => m.StudentRollNo == roll && m.Password == password).SingleOrDefault();
                 var marktest = _context.StudentMark.Where(m => m.StudentRollNo == roll).SingleOrDefault();
-                if (studetcheck != null && marktest !=null)
+                if (studetcheck != null && marktest != null)
                 {
                     markadd.Student_Roll_no = marktest.StudentRollNo;
                     markadd.Tamil = marktest.Tamil;
@@ -32,7 +33,7 @@ namespace staffstudent.Resources.staffRepository
                     markadd.Science = marktest.Science;
                     markadd.Maths = marktest.Maths;
                     markadd.Total = marktest.Total;
-                    markadd.Average = marktest.Average;  
+                    markadd.Average = marktest.Average;
                 }
                 return markadd;
             }
@@ -42,7 +43,7 @@ namespace staffstudent.Resources.staffRepository
         #region Getstudentlist for dashboard
         public List<StudentInformationEntity> Getstudentlist()
         {
-            List<StudentInformationEntity> listofstudent = new ();
+            List<StudentInformationEntity> listofstudent = new();
             using (var _context = new StaffmanagementContext())
             {
                 var list = _context.StudentInformation.Where(m => m.IsDeleted == false).ToList();
@@ -54,7 +55,7 @@ namespace staffstudent.Resources.staffRepository
                     studentlist.Gender = context.Gender;
                     studentlist.Dob = context.Dob;
                     studentlist.FatherFirstName = context.FatherFirstName + " " + context.FatherLastName;
-                    studentlist.MotherFirstName = context.MotherFirstName +" "+ context.MotherLastName;
+                    studentlist.MotherFirstName = context.MotherFirstName + " " + context.MotherLastName;
                     studentlist.Email = context.Email;
                     studentlist.StudentContactNo = context.StudentContactNo;
                     studentlist.FatherSContactNo = context.FatherSContactNo;
@@ -78,185 +79,107 @@ namespace staffstudent.Resources.staffRepository
         #region Add new student and update
         public void Addstudentdetail(StudentInformationEntity studentdetail)
         {
-            
-               using (var _context = new StaffmanagementContext())
-               {
-                    var updatetask = _context.StudentInformation.Where(m => m.StudentRollNo == studentdetail.StudentRollNo).SingleOrDefault();
-                    if (updatetask != null)
-                    {
-                        updatetask.StudentRollNo = studentdetail.StudentRollNo;
-                        updatetask.StudentFirstName = studentdetail.StudentFirstName;
-                        updatetask.StudentLastName = studentdetail.StudentLastName;
-                        updatetask.Gender = studentdetail.Gender;
-                        updatetask.Dob = studentdetail.Dob;
-                        updatetask.FatherFirstName = studentdetail.FatherFirstName;
-                        updatetask.FatherLastName = studentdetail.FatherLastName;
-                        updatetask.MotherFirstName = studentdetail.MotherFirstName;
-                        updatetask.MotherLastName = studentdetail.MotherLastName;
-                        updatetask.Email = studentdetail.Email;
-                        updatetask.StudentContactNo = studentdetail.StudentContactNo;
-                        updatetask.FatherSContactNo = studentdetail.FatherSContactNo;
-                       updatetask.FatherSOccupation = studentdetail.FatherSOccupation;
-                        updatetask.UpdatedTimeStamp = DateTime.Now;
-                        _context.SaveChanges();
-                    }
-                    else
-                    {
-                        StudentInformation addtask = new ();
 
-                        addtask.StudentRollNo = studentdetail.StudentRollNo;
-                        addtask.StudentFirstName = studentdetail.StudentFirstName;
-                        addtask.StudentLastName = studentdetail.StudentLastName;
-                        addtask.Gender = studentdetail.Gender;
-                        addtask.Dob = studentdetail.Dob;
-                        addtask.FatherFirstName = studentdetail.FatherFirstName;
-                        addtask.FatherLastName = studentdetail.FatherLastName;
-                        addtask.MotherFirstName = studentdetail.MotherFirstName;
-                        addtask.MotherLastName = studentdetail.MotherLastName;
-                        addtask.Email = studentdetail.Email;
-                        addtask.StudentContactNo = studentdetail.StudentContactNo;
-                        addtask.FatherSContactNo = studentdetail.FatherSContactNo;
-                        addtask.FatherSOccupation = studentdetail.FatherSOccupation;
-                        addtask.Password = studentdetail.Password;
-                        _context.StudentInformation.Add(addtask);
-                        _context.SaveChanges();
-                    }
-                   
-               } 
+            using (var _context = new StaffmanagementContext())
+            {
+                var updatetask = _context.StudentInformation.Where(m => m.StudentRollNo == studentdetail.StudentRollNo).SingleOrDefault();
+                if (updatetask != null)
+                {
+                    updatetask.StudentRollNo = studentdetail.StudentRollNo;
+                    updatetask.StudentFirstName = studentdetail.StudentFirstName;
+                    updatetask.StudentLastName = studentdetail.StudentLastName;
+                    updatetask.Gender = studentdetail.Gender;
+                    updatetask.Dob = studentdetail.Dob;
+                    updatetask.FatherFirstName = studentdetail.FatherFirstName;
+                    updatetask.FatherLastName = studentdetail.FatherLastName;
+                    updatetask.MotherFirstName = studentdetail.MotherFirstName;
+                    updatetask.MotherLastName = studentdetail.MotherLastName;
+                    updatetask.Email = studentdetail.Email;
+                    updatetask.StudentContactNo = studentdetail.StudentContactNo;
+                    updatetask.FatherSContactNo = studentdetail.FatherSContactNo;
+                    updatetask.FatherSOccupation = studentdetail.FatherSOccupation;
+                    updatetask.UpdatedTimeStamp = DateTime.Now;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    StudentInformation addtask = new();
+
+                    addtask.StudentRollNo = studentdetail.StudentRollNo;
+                    addtask.StudentFirstName = studentdetail.StudentFirstName;
+                    addtask.StudentLastName = studentdetail.StudentLastName;
+                    addtask.Gender = studentdetail.Gender;
+                    addtask.Dob = studentdetail.Dob;
+                    addtask.FatherFirstName = studentdetail.FatherFirstName;
+                    addtask.FatherLastName = studentdetail.FatherLastName;
+                    addtask.MotherFirstName = studentdetail.MotherFirstName;
+                    addtask.MotherLastName = studentdetail.MotherLastName;
+                    addtask.Email = studentdetail.Email;
+                    addtask.StudentContactNo = studentdetail.StudentContactNo;
+                    addtask.FatherSContactNo = studentdetail.FatherSContactNo;
+                    addtask.FatherSOccupation = studentdetail.FatherSOccupation;
+                    addtask.Password = studentdetail.Password;
+                    _context.StudentInformation.Add(addtask);
+                    _context.SaveChanges();
+                }
+
+            }
         }
         #endregion 
 
         #region Excel upload
         //for oldb error
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
-        public int UploadExclel(IFormFile docs, Fileupload getexcel)
+        public string UploadExclel(List<StudentMarkEntity> lists)
         {
-            var _context = new StaffmanagementContext();
-            
-            string filename = getexcel.Filename; 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Root", "Excel", filename);
-
-            #region Find path here-not used now
-            //we can also use File to find files here...
-            //we use Directory to find path if not exists it create new folder here...
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-            //else 
-            //{
-            //    Directory.Delete(path);
-            //}
-
-            //check weather File path exists
-            //if (!File.Exists(path))
-            //{
-            //    File.Create(path);
-            //}
-            //else 
-            //{
-            //    File.Delete(path);
-            //}
-            #endregion
-
-
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            using (var _context = new StaffmanagementContext())
             {
-                docs.CopyToAsync(fileStream);
-            }
-
-            if (getexcel.contenttype == "application/vnd.ms-excel" || getexcel.contenttype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-            {
-                var connectionString = "";
-                if (filename.EndsWith(".xls"))
+                foreach (var mark in lists)
                 {
-                    connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", path);
-                }
-                else if (filename.EndsWith(".xlsx"))
-                {
-                    connectionString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"Excel 12.0 Xml;HDR=YES;IMEX=0\";", path);
-                }
+                    StudentMark markupload = new StudentMark();
 
-                var adapter = new OleDbDataAdapter("SELECT [Student_Roll_no],[Tamil],[English]," +
-                    "[Science],[Maths],[Total],[Average] FROM [Sheet1$]", connectionString);
+                    //Update logic for mark if roll nummber exists in our databse
 
-                //start
-
-                //var file = new OleDbConnection(connectionString);
-                //file.Open();
-                //var dt = file.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-                //if (!dt.Columns.IsSynchronized)
-                //{
-                //    return 3;
-                //}
-                //else
-                //{
-                //    return 1;
-                //}
-                
-                //end
-
-                var ds = new DataSet();
-                try
-                {
-                    adapter.Fill(ds, "ExcelTable");
-                    DataTable dtable = ds.Tables["ExcelTable"];
-                    string sheetName = "Sheet1";
-                    var excelFile = new ExcelQueryFactory(path);
-                    var artistAlbums = from a in excelFile.Worksheet<StudentMarkEntity>(sheetName) select a;
-                    int count = 0;
-                    foreach (var mark in artistAlbums)
+                    var checkforexist = _context.StudentMark.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
+                    if (checkforexist != null)
                     {
-                        StudentMark markupload = new StudentMark();
+                        checkforexist.Tamil = mark.Tamil;
+                        checkforexist.English = mark.English;
+                        checkforexist.Science = mark.Science;
+                        checkforexist.Maths = mark.Maths;
+                        checkforexist.Total = mark.Total;
+                        checkforexist.Average = mark.Average;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        //Add logic for mark if roll number not exists in mark databse and check weather StudentInformation has that roll number
+                        // if StudentInformation does not containt that roll number mark is not added,otherwise mark is added.
 
-                        //Update logic for mark if roll nummber exists in our databse
-
-                        var checkforexist = _context.StudentMark.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
-                        if (checkforexist != null)
+                        var checkfordetail = _context.StudentInformation.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
+                        if (checkfordetail != null)
                         {
-                            checkforexist.Tamil = mark.Tamil;
-                            checkforexist.English = mark.English;
-                            checkforexist.Science = mark.Science;
-                            checkforexist.Maths = mark.Maths;
-                            checkforexist.Total = mark.Total;
-                            checkforexist.Average = mark.Average;
+                            markupload.StudentRollNo = mark.Student_Roll_no;
+                            markupload.Tamil = mark.Tamil;
+                            markupload.English = mark.English;
+                            markupload.Science = mark.Science;
+                            markupload.Maths = mark.Maths;
+                            markupload.Total = mark.Total;
+                            markupload.Average = mark.Average;
+                            _context.Add(markupload);
                             _context.SaveChanges();
-                            count += 1;
                         }
                         else
                         {
-                            //Add logic for mark if roll number not exists in mark databse and check weather StudentInformation has that roll number
-                            // if StudentInformation does not containt that roll number mark is not added,otherwise mark is added.
-
-                            var checkfordetail = _context.StudentInformation.Where(m => m.StudentRollNo == mark.Student_Roll_no).SingleOrDefault();
-                            if (checkfordetail != null)
-                            {
-                                markupload.StudentRollNo = mark.Student_Roll_no;
-                                markupload.Tamil = mark.Tamil;
-                                markupload.English = mark.English;
-                                markupload.Science = mark.Science;
-                                markupload.Maths = mark.Maths;
-                                markupload.Total = mark.Total;
-                                markupload.Average = mark.Average;
-                                _context.Add(markupload);
-                                _context.SaveChanges(); 
-                            }
-                            else
-                            {
-                                return 2;
-                            }
+                            return "Some of the student Is not in student detail please update student detail first... ";
                         }
-                        
                     }
-                    return count;
                 }
-                catch(Exception)
-                {
-                    return 3;
-                }
+                return "updated successfully...";
             }
-            return 4;
+           
         }
+
         #endregion
 
         #region Getstudent detail for Edit
@@ -310,13 +233,13 @@ namespace staffstudent.Resources.staffRepository
 
         public List<StudentMarkEntity> GetstudentMarkList()
         {
-            List<StudentMarkEntity> marklist = new ();
+            List<StudentMarkEntity> marklist = new();
             using (var _context = new StaffmanagementContext())
             {
                 var getmark = _context.StudentMark.Where(m => m.IsDeleted == false).ToList();
                 foreach (var mark in getmark)
                 {
-                    StudentMarkEntity get = new ();
+                    StudentMarkEntity get = new();
                     get.Student_Roll_no = mark.StudentRollNo;
                     get.Tamil = mark.Tamil;
                     get.English = mark.English;
@@ -329,6 +252,29 @@ namespace staffstudent.Resources.staffRepository
             }
             return marklist;
         }
+
+        #endregion
+
+        #region Schedule mail for test
+
+        public void ScheduleMail(StudentMarkEntity ScheduleMail)
+        {
+            try
+            {
+                using (var _context = new StaffmanagementContext())
+                {
+                    var getrollno = _context.StudentMark.Where(m => m.IsDeleted == false && m.StudentRollNo == ScheduleMail.Student_Roll_no).FirstOrDefault();
+                    getrollno.Subject = ScheduleMail.Subject;
+                    getrollno.ScheduledTime = ScheduleMail.ScheduledTime;
+                    _context.SaveChanges();
+                }
+            }
+            catch
+            {
+                
+            }
+        }
+
 
         #endregion
 

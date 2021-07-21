@@ -23,7 +23,7 @@ namespace staffstudent.Core.staffEntity
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Dob { get; set; }
+        public DateTime? Dob { get; set; }
         [Required]
         [StringLength(40)]
         public string FatherFirstName { get; set; }

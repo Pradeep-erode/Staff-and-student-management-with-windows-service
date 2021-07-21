@@ -135,7 +135,7 @@ $(function () {
             },
             Dob:
             {
-                required: true
+                required: "Date of birth is required..."
             },
             FatherFirstName:
             {
@@ -202,6 +202,20 @@ function SubmitDetails() {
 $(function () {
     if ($("#Rollnum").val() == 0) {
         $("#Rollnum").val("");
+    }
+});
+
+//student no null
+$(function () {
+    if ($("#studcontact").val() == 0) {
+        $("#studcontact").val("");
+    }
+});
+
+//father number null
+$(function () {
+    if ($("#fathercontact").val() == 0) {
+        $("#fathercontact").val("");
     }
 });
 
@@ -301,6 +315,7 @@ function StaffDetails() {
 $("#btnsubmit").click(function () {
     $('.spin').css('display', 'block');
 });
+
 
 $("#updatespin").click(function () {
     $('.spincenter').css('display', 'block');

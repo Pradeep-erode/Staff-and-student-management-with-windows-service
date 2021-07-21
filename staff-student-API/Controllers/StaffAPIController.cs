@@ -18,20 +18,20 @@ namespace staff_student_API.Controllers
 
         #region Injection
 
-         private readonly IServiceStaff _Iservicestaff;
+        private readonly IServiceStaff _Iservicestaff;
         public StaffAPIController(IServiceStaff staffservice)
         {
             _Iservicestaff = staffservice;
         }
-	#endregion
-       
+        #endregion
+
         #region Student login checking and get individual mark list 
 
         [HttpGet]
-        public ActionResult Studentcheck(int roll,string password)
+        public ActionResult Studentcheck(int roll, string password)
         {
             var check = _Iservicestaff.Studentcheck(roll, password);
-            if (check !=null)
+            if (check != null)
             {
                 return Ok(check);
             }
@@ -42,8 +42,8 @@ namespace staff_student_API.Controllers
             }
         }
 
-	    #endregion
-        
+        #endregion
+
         #region Get student list dashboard
         [HttpGet]
         public ActionResult Getstudentlist()
@@ -51,44 +51,57 @@ namespace staff_student_API.Controllers
             var studentlist = _Iservicestaff.Getstudentlist();
             return Ok(studentlist);
         }
-	#endregion
-        
+        #endregion
+
         #region Excel upload file
         [HttpPost]
         public ActionResult UploadExclel(Fileupload fileupload)
         {
             if (fileupload.filebyte != null)
             {
-                Fileupload getexcel = new();
+                Fileupload uploadexcel = new();
 
                 //transform fileupload data into getexcel object
-                getexcel.Filename = fileupload.Filename;
-                getexcel.contenttype = fileupload.contenttype;
+                uploadexcel.Filename = fileupload.Filename;
+                uploadexcel.contenttype = fileupload.contenttype;
 
                 //as byte[] data not transfering to service and repository flow
                 //we convert byte[] to IForm file here...
                 byte[] bytefile = fileupload.filebyte;
                 var streama = new MemoryStream(bytefile);
                 IFormFile file = new FormFile(streama, 0, bytefile.Length, "name", "fileName");
+                uploadexcel.excelfile = file;
 
-                //here we send IFormFile and Fileupload instanse as arguments...
-                var Issuccess = _Iservicestaff.UploadExclel(file, getexcel);
-                if (Issuccess == 1)
-                {
-                    return Ok();
-                }
-                else if (Issuccess == 2)
-                {
-                    return StatusCode(417);
-                }
-                else if (Issuccess == 3)
-                {
-                    return StatusCode(409);
-                }
-                else if (Issuccess > 3)
+                var Issuccess = _Iservicestaff.UploadExclel(uploadexcel);
+                if (Issuccess != null)
                 {
                     return Ok(Issuccess);
                 }
+
+                #region For returning differrent success code
+
+                //else if (Issuccess == 2)
+                //{
+                //    return StatusCode(417);
+                //}
+                //else if (Issuccess == 3)
+                //{
+                //    return StatusCode(409);
+                //}
+                //else if (Issuccess == 4)
+                //{
+                //    return StatusCode(400);
+                //}
+                //else if (Issuccess == 5)
+                //{
+                //    return StatusCode(403);
+                //}
+                //else if (Issuccess == 6)
+                //{
+                //    return StatusCode(406);
+                //}
+                #endregion
+
             }
             return NotFound();
 
@@ -107,8 +120,8 @@ namespace staff_student_API.Controllers
             }
             return NotFound();
         }
-	#endregion
-        
+        #endregion
+
         #region get student detail for edit
         [HttpGet]
         public ActionResult Getstudentbyrollno(int rollno)
@@ -120,7 +133,7 @@ namespace staff_student_API.Controllers
             }
             return NotFound();
         }
-	#endregion
+        #endregion
 
         #region Delete student detail and mark both
         [HttpDelete]
@@ -133,16 +146,22 @@ namespace staff_student_API.Controllers
             }
             return NotFound();
         }
-	#endregion
-        
+        #endregion
+
         #region get all student mark list
         [HttpGet]
         public ActionResult GetstudentMarkList()
         {
-            var listofmark=_Iservicestaff.GetstudentMarkList();
+            var listofmark = _Iservicestaff.GetstudentMarkList();
             return Ok(listofmark);
         }
-	#endregion
-       
+        #endregion
+
+        [HttpPost]
+        public ActionResult ScheduleMail(StudentMarkEntity ScheduleMail)
+        {
+            _Iservicestaff.ScheduleMail(ScheduleMail);
+            return Ok();
+        }
     }
 }

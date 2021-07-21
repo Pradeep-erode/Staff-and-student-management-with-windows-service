@@ -67,6 +67,8 @@ namespace staffstudent.Entities
 
                 entity.Property(e => e.CreatedTimeStamp).HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Subject).IsUnicode(false);
+
                 entity.Property(e => e.UpdatedTimeStamp).HasDefaultValueSql("(getdate())");
             });
 

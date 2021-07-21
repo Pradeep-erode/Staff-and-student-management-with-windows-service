@@ -1,0 +1,18 @@
+﻿Installing assembly 'D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe'.
+Affected parameters are:
+   logtoconsole = 
+   i = 
+   assemblypath = D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe
+   logfile = D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.InstallLog
+An exception occurred while trying to find the installers in the D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe assembly.
+System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types. Retrieve the LoaderExceptions property for more information.
+Aborting installation for D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe.
+Rolling back assembly 'D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe'.
+Affected parameters are:
+   logtoconsole = 
+   i = 
+   assemblypath = D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe
+   logfile = D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.InstallLog
+An exception occurred while trying to find the installers in the D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe assembly.
+System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types. Retrieve the LoaderExceptions property for more information.
+Aborting installation for D:\Dotnetcore samples\Staff and student management\windows service-sole\Mail-scheduler-service.exe.

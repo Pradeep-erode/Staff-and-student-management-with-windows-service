@@ -11,24 +11,47 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Staff_and_student.Controllers
 {
     public class StaffmanagementController : Controller
     {
+        public object Schedular { get; private set; }
 
         #region  all login pages
         public IActionResult Mainpage()
         {
-            return View();
+           TempData[" logout"] = "logout not nessesary";
+           return View();
         }
         public IActionResult Stafflogin()
         {
-            return View();
+            //DateTime scheduledTime = DateTime.MinValue;
+            //scheduledTime = scheduledTime.AddDays(1);
+            //scheduledTime = DateTime.Now.AddMinutes(1);
+            //TimeSpan timeSpan = scheduledTime.Subtract(DateTime.Now);
+            //var times = timeSpan;
+            //string schedule = string.Format("{0} day(s) {1} hour(s) {2} minute(s) {3} seconds(s)", timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+            //var msg = schedule;
+            //int dueTime = Convert.ToInt32(timeSpan.Milliseconds);
+            //var lio = Timeout.Infinite;
+
+            TempData[" logout"] = "logout not nessesary";
+          return View();
         }
         public IActionResult Studentlogin()
         {
+            //var timeString = "07:00";
+            //DateTime t = DateTime.Parse(timeString);
+            //TimeSpan ts = new TimeSpan();
+            //ts = t - DateTime.Now;
+            //if (ts.TotalMilliseconds < 0)
+            //{
+            //    ts = t.AddDays(1) - DateTime.Now;
+            //}
+
             return View();
         }
         #endregion
@@ -144,6 +167,49 @@ namespace Staff_and_student.Controllers
                 return RedirectToAction("Stafflogin");
             }
         }
+
+        #endregion
+
+        #region Schedule mail post method
+
+        [HttpPost]
+        public ActionResult ScheduleTestformail(StudentMarkEntity mailschedule)
+        {
+            if (mailschedule.ScheduledTime > DateTime.Now.AddMinutes(10))
+            {
+                if (HttpContext.Session.GetString("credential") != null)
+                {
+
+
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/ScheduleMail/");
+                        var Posttask = client.PostAsJsonAsync(client.BaseAddress, mailschedule);
+                        Posttask.Wait();
+                        var checkresult = Posttask.Result;
+                        if (checkresult.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Studentdashboard");
+                        }
+                        else
+                        {
+                            TempData["nodata"] = "Not Scheduled correctly...";
+                            return RedirectToAction("ScheduleTest");
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Stafflogin");
+                }
+            }
+            else
+            {
+                TempData["nodata"] = "Schedule minimum of 10 minutes from time NOW...";
+                return View("ScheduleTest");
+            }
+        }
+
         #endregion
 
         #region Excel upload post
@@ -174,29 +240,65 @@ namespace Staff_and_student.Controllers
                         using (var client = new HttpClient())
                         {
                             client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/UploadExclel");
-                            var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload);
-                            Posttask.Wait();
-                            var checkresult = Posttask.Result;
-                            if (checkresult.IsSuccessStatusCode)
-                            {
-                                return RedirectToAction("StudentmarkShow");
-                            }
-                            else if (checkresult.ReasonPhrase.Equals("Expectation Failed"))
-                            {
-                                TempData["ExcelNotify"] = "Some of the student Is not in student detail please update student detail first...";
-                                return RedirectToAction("Studentdashboard");
-                            }
+                            //normal post method
+                            //var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload);
 
-                            else if (checkresult.ReasonPhrase.Equals("Conflict"))
-                            {
-                                TempData["ExcelNotify"] = "Please check Excel file..Column should be not null...";
-                                return RedirectToAction("Studentdashboard");
-                            }
-                            else if (checkresult.ReasonPhrase.Equals("Not Found"))
-                            {
-                                TempData["ExcelNotify"] = "connection To API failed...";
-                                return RedirectToAction("Studentdashboard");
-                            }
+                            //for getting value from post method
+                            var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload).Result;
+                            //for getting int value
+                            //var getint = Posttask.Content.ReadAsAsync<int>();
+
+                            //for getting string value
+                            var getint = Posttask.Content.ReadAsStringAsync();
+                           
+                            var errormessage=getint.Result;
+
+                            TempData["ExcelNotify"] = errormessage;
+                            return RedirectToAction("Studentdashboard");
+
+                            //for checking response code depend on its response phrases...
+
+                            #region response phrases check
+
+                            //if (checkresult.IsSuccessStatusCode)
+                            //{
+                            //    return RedirectToAction("StudentmarkShow");
+                            //}
+                            //else if (checkresult.ReasonPhrase.Equals("Expectation Failed"))
+                            //{
+                            //    TempData["ExcelNotify"] = "Some of the student Is not in student detail please update student detail first...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+
+                            //else if (checkresult.ReasonPhrase.Equals("Conflict"))
+                            //{
+                            //    TempData["ExcelNotify"] = "Linq to Excel package not intalled correctly...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+                            //else if (checkresult.ReasonPhrase.Equals("Not Found"))
+                            //{
+                            //    TempData["ExcelNotify"] = "connection To API failed...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+
+                            //else if (checkresult.ReasonPhrase.Equals("Bad Request"))
+                            //{
+                            //    TempData["ExcelNotifhy"] = "Table column should not be null...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+                            //else if (checkresult.ReasonPhrase.Equals("Forbidden"))
+                            //{
+                            //    TempData["ExcelNotifhy"] = "use only numbers in mark field...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+                            //else if (checkresult.ReasonPhrase.Equals("Not Acceptable"))
+                            //{
+                            //    TempData["ExcelNotifhy"] = "student roll should be 4 digit and mark should be 3 digits only allowed...";
+                            //    return RedirectToAction("Studentdashboard");
+                            //}
+
+                            #endregion
+
                         }
 
                     }

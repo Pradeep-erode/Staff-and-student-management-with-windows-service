@@ -12,11 +12,12 @@ namespace staffstudent.Core.IService
     {
         public StudentMarkEntity Studentcheck(int roll, string password);
         public List<StudentInformationEntity> Getstudentlist();
-        public int UploadExclel(IFormFile docs, Fileupload getexcel);
+        public string UploadExclel(Fileupload uploadexcel);
         public void Addstudentdetail(StudentInformationEntity studentdetail);
         public StudentInformationEntity Getstudentbyrollno(int rollno);
         public void Deletestudentbyrollno(int rollno);
 
         public List<StudentMarkEntity> GetstudentMarkList();
+        public void ScheduleMail(StudentMarkEntity ScheduleMail);
     }
 }

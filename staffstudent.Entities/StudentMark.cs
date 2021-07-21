@@ -20,6 +20,10 @@ namespace staffstudent.Entities
         public int Maths { get; set; }
         public int Total { get; set; }
         public double Average { get; set; }
+        [StringLength(10)]
+        public string Subject { get; set; }
+        [Column("Scheduled_time", TypeName = "datetime")]
+        public DateTime? ScheduledTime { get; set; }
         [Column("Is_deleted")]
         public bool IsDeleted { get; set; }
         [Column("Created_time_stamp", TypeName = "datetime")]

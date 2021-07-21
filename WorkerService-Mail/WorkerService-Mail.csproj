@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dotnet-WorkerService_Mail-1AB34B72-18CE-45CA-8C02-9B6E517BB3E4</UserSecretsId>
+    <RootNamespace>WorkerService_Mail</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\staffstudent.Entities\staffstudent.Entities.csproj" />
+  </ItemGroup>
+</Project>

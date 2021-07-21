@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StaffmanagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Student_Information">
+          <Key>
+            <PropertyRef Name="Student_Roll_No" />
+          </Key>
+          <Property Name="Student_Roll_No" Type="int" Nullable="false" />
+          <Property Name="Student_First_name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Student_Last_Name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="Father_First_name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Father_Last_name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Mother_First_name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Mother_Last_name" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Student_Contact_no" Type="bigint" Nullable="false" />
+          <Property Name="Father's_Contact_no" Type="bigint" Nullable="false" />
+          <Property Name="Father's_occupation" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Is_deleted" Type="bit" Nullable="false" />
+          <Property Name="Created_time_stamp" Type="datetime" Nullable="false" />
+          <Property Name="Updated_time_stamp" Type="datetime" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentMark">
+          <Key>
+            <PropertyRef Name="Student_Roll_no" />
+          </Key>
+          <Property Name="Student_Roll_no" Type="int" Nullable="false" />
+          <Property Name="Tamil" Type="int" Nullable="false" />
+          <Property Name="English" Type="int" Nullable="false" />
+          <Property Name="Science" Type="int" Nullable="false" />
+          <Property Name="Maths" Type="int" Nullable="false" />
+          <Property Name="Total" Type="int" Nullable="false" />
+          <Property Name="Average" Type="float" Nullable="false" />
+          <Property Name="Subject" Type="varchar" MaxLength="10" />
+          <Property Name="Scheduled_time" Type="datetime" />
+          <Property Name="Is_deleted" Type="bit" Nullable="false" />
+          <Property Name="Created_time_stamp" Type="datetime" Nullable="false" />
+          <Property Name="Updated_time_stamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="StaffmanagementModelStoreContainer">
+          <EntitySet Name="Student_Information" EntityType="Self.Student_Information" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentMark" EntityType="Self.StudentMark" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StaffmanagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Student_Information">
+          <Key>
+            <PropertyRef Name="Student_Roll_No" />
+          </Key>
+          <Property Name="Student_Roll_No" Type="Int32" Nullable="false" />
+          <Property Name="Student_First_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Student_Last_Name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Father_First_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Father_Last_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mother_First_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Mother_Last_name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Student_Contact_no" Type="Int64" Nullable="false" />
+          <Property Name="Father_s_Contact_no" Type="Int64" Nullable="false" />
+          <Property Name="Father_s_occupation" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Is_deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Created_time_stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated_time_stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentMark">
+          <Key>
+            <PropertyRef Name="Student_Roll_no" />
+          </Key>
+          <Property Name="Student_Roll_no" Type="Int32" Nullable="false" />
+          <Property Name="Tamil" Type="Int32" Nullable="false" />
+          <Property Name="English" Type="Int32" Nullable="false" />
+          <Property Name="Science" Type="Int32" Nullable="false" />
+          <Property Name="Maths" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Int32" Nullable="false" />
+          <Property Name="Average" Type="Double" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Scheduled_time" Type="DateTime" Precision="3" />
+          <Property Name="Is_deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Created_time_stamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated_time_stamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="StaffmanagementEntitiesss" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Student_Information" EntityType="Self.Student_Information" />
+          <EntitySet Name="StudentMarks" EntityType="Self.StudentMark" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StaffmanagementModelStoreContainer" CdmEntityContainer="StaffmanagementEntitiesss">
+          <EntitySetMapping Name="Student_Information">
+            <EntityTypeMapping TypeName="StaffmanagementModel.Student_Information">
+              <MappingFragment StoreEntitySet="Student_Information">
+                <ScalarProperty Name="Student_Roll_No" ColumnName="Student_Roll_No" />
+                <ScalarProperty Name="Student_First_name" ColumnName="Student_First_name" />
+                <ScalarProperty Name="Student_Last_Name" ColumnName="Student_Last_Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Father_First_name" ColumnName="Father_First_name" />
+                <ScalarProperty Name="Father_Last_name" ColumnName="Father_Last_name" />
+                <ScalarProperty Name="Mother_First_name" ColumnName="Mother_First_name" />
+                <ScalarProperty Name="Mother_Last_name" ColumnName="Mother_Last_name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Student_Contact_no" ColumnName="Student_Contact_no" />
+                <ScalarProperty Name="Father_s_Contact_no" ColumnName="Father's_Contact_no" />
+                <ScalarProperty Name="Father_s_occupation" ColumnName="Father's_occupation" />
+                <ScalarProperty Name="Is_deleted" ColumnName="Is_deleted" />
+                <ScalarProperty Name="Created_time_stamp" ColumnName="Created_time_stamp" />
+                <ScalarProperty Name="Updated_time_stamp" ColumnName="Updated_time_stamp" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentMarks">
+            <EntityTypeMapping TypeName="StaffmanagementModel.StudentMark">
+              <MappingFragment StoreEntitySet="StudentMark">
+                <ScalarProperty Name="Student_Roll_no" ColumnName="Student_Roll_no" />
+                <ScalarProperty Name="Tamil" ColumnName="Tamil" />
+                <ScalarProperty Name="English" ColumnName="English" />
+                <ScalarProperty Name="Science" ColumnName="Science" />
+                <ScalarProperty Name="Maths" ColumnName="Maths" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Scheduled_time" ColumnName="Scheduled_time" />
+                <ScalarProperty Name="Is_deleted" ColumnName="Is_deleted" />
+                <ScalarProperty Name="Created_time_stamp" ColumnName="Created_time_stamp" />
+                <ScalarProperty Name="Updated_time_stamp" ColumnName="Updated_time_stamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

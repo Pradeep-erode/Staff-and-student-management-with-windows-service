@@ -5,17 +5,21 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Staff-and-student", "Staff-and-student.csproj", "{F870F21F-B7E1-4957-AB08-4838962065E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staffstudent.Core", "..\staffstudent.Core\staffstudent.Core.csproj", "{3356D47E-5E1F-418C-B5C7-AF73676257EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staffstudent.Core", "..\staffstudent.Core\staffstudent.Core.csproj", "{3356D47E-5E1F-418C-B5C7-AF73676257EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staffstudent.Services", "..\staffstudent.Services\staffstudent.Services.csproj", "{0CFD50C4-172D-4A49-BFF9-9B1A57FB9B7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staffstudent.Services", "..\staffstudent.Services\staffstudent.Services.csproj", "{0CFD50C4-172D-4A49-BFF9-9B1A57FB9B7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staffstudent.Resources", "..\staffstudent.Resources\staffstudent.Resources.csproj", "{5F142F13-1E59-40C5-8113-99741FE2D4A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staffstudent.Resources", "..\staffstudent.Resources\staffstudent.Resources.csproj", "{5F142F13-1E59-40C5-8113-99741FE2D4A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staffstudent.Utility", "..\staffstudent.Utility\staffstudent.Utility.csproj", "{6EDF50B0-EEEA-4ABD-BDF6-B09440323430}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staffstudent.Utility", "..\staffstudent.Utility\staffstudent.Utility.csproj", "{6EDF50B0-EEEA-4ABD-BDF6-B09440323430}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staffstudent.Entities", "..\staffstudent.Entities\staffstudent.Entities.csproj", "{F38D5DAD-8F5D-4786-9779-FDDF279FB8B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staffstudent.Entities", "..\staffstudent.Entities\staffstudent.Entities.csproj", "{F38D5DAD-8F5D-4786-9779-FDDF279FB8B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "staff-student-API", "..\staff-student-API\staff-student-API.csproj", "{28779072-1323-4A71-8384-12BEA0EDD8F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "staff-student-API", "..\staff-student-API\staff-student-API.csproj", "{28779072-1323-4A71-8384-12BEA0EDD8F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail-scheduler-service", "..\Mail-scheduler-service\Mail-scheduler-service.csproj", "{CEB220E5-7126-4EE7-A5B9-FA38D10A5475}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerService-Mail", "..\WorkerService-Mail\WorkerService-Mail.csproj", "{68930391-17BE-46D0-AB3B-6EB0D046F87E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{28779072-1323-4A71-8384-12BEA0EDD8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28779072-1323-4A71-8384-12BEA0EDD8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28779072-1323-4A71-8384-12BEA0EDD8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB220E5-7126-4EE7-A5B9-FA38D10A5475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB220E5-7126-4EE7-A5B9-FA38D10A5475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB220E5-7126-4EE7-A5B9-FA38D10A5475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB220E5-7126-4EE7-A5B9-FA38D10A5475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68930391-17BE-46D0-AB3B-6EB0D046F87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68930391-17BE-46D0-AB3B-6EB0D046F87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68930391-17BE-46D0-AB3B-6EB0D046F87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68930391-17BE-46D0-AB3B-6EB0D046F87E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

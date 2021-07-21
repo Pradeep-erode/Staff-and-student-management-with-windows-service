@@ -25,15 +25,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>*@
+                         @if (TempData[" logout"] == null)
+                         {
+                            <li class="nav-item ml-auto">
+                                <a class="btn btn-primary btn-lg" id="logout" style="display:block" asp-area="" asp-controller="Staffmanagement" asp-action="Logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>*@
-                        <li class="nav-item ml-auto">
-                            <a class="btn btn-primary btn-lg" asp-area="" asp-controller="Staffmanagement" asp-action="Logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
-                        </li>
-                    </ul>
+                          }
+                        </ul>
                 </div>
             </div>
         </nav>
@@ -63,6 +66,7 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
+
 
 <div class="clearfix">
     <div class="spincenter spinner-border" style="display:none" role="status">

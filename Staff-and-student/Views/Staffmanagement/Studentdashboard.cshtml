@@ -7,139 +7,148 @@
     {
     <partial name="_ValidationScriptsPartial">
 }
-        <script src="~/js/site.js"></script>
-<h5>Studentdashboard</h5>
+<script src="~/js/site.js"></script>
 
-@Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement",new { },new { @class="btn btn-primary btn-lg"})
+<div class="container-fluid">
+
+    <h5>Studentdashboard</h5>
+
+    @Html.ActionLink("Add new student", "StudentAddandEdit", "Staffmanagement", new { }, new { @class = "btn btn-primary btn-lg" })
 
 
-<div class="form-group float-right pb-3">
-    @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { @id = "formfirst", enctype = "multipart/form-data" }))
+    <div class="form-group float-right pb-3">
+        @using (Html.BeginForm("Excelupload", "Staffmanagement", FormMethod.Post, new { @id = "formfirst", enctype = "multipart/form-data" }))
+        {
+            <label>Choose you file</label>
+            <input type="file" accept="xlsx/xls*" name="UploadedFile" id="UploadedFile" required style="color: darkred;">
+            <button type="submit" onclick="SubmitDetailsa()" class="btn btn-default btn-lg btn-success">Upload</button>
+        }
+    </div>
+
+    @Html.ActionLink("Student Mark Page", "StudentmarkShow", new { }, new { @class = "btn btn-secondary btn-lg" })
+    <div class="flex-lg-row">
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Student Roll no
+                        </th>
+                        <th>
+                            Student Name
+                        </th>
+                        <th>
+                            Gender
+                        </th>
+                        <th>
+                            DOB
+                        </th>
+                        <th>
+                            Fathers Name
+                        </th>
+                        <th>
+                            Mothers Name
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Students Contact
+                        </th>
+                        <th>
+                            Fathers Contact
+                        </th>
+                        <th>
+                            Fathers Occupation
+                        </th>
+                        <th>
+                            Student Password
+                        </th>
+                        <th>
+                            <label>Marks</label>
+                        </th>
+                        <th>
+                            <label>Actions</label>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentRollNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentFirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Gender)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Dob)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FatherFirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MotherFirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentContactNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FatherSContactNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FatherSOccupation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @if (item.IsMarkadded == true)
+                                {
+                                    <label class="text-success">Added</label>
+                                }
+                                else
+                                {
+                                    <label class="text-danger">Not added</label>
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "StudentAddandEdit", new { rollno = item.StudentRollNo }, new { @class = "btn btn-warning btn-block btn-lg" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "StudentDelete", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-block btn-lg", onclick = "return confirm('Are you want to delete');" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Schedule Test", "ScheduleTest", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-lg"})
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @if (TempData["ExcelNotify"] != null)
     {
-        <label>Choose you file</label>
-        <input type="file" accept="xlsx/xls*" name="UploadedFile" id="UploadedFile" required style="color: darkred;">
-        <button type="submit" onclick="SubmitDetailsa()" class="btn btn-default btn-lg btn-success">Upload</button>
+        <script type="text/javascript">
+        alert("@TempData["ExcelNotify"]");
+        </script>
+    }
+    @if (TempData["nodataforEdit"] != null)
+    {
+        <span class="alert alert-info"> @TempData["nodataforEdit"]</span>
     }
 </div>
-
-@Html.ActionLink("Student Mark Page", "StudentmarkShow", new { }, new { @class = "btn btn-secondary btn-lg" })
-        <div class="flex-lg-row">
-            <div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Student Roll no
-            </th>
-            <th>
-                Student Name
-            </th>
-            <th>
-                Gender
-            </th>
-            <th>
-               DOB
-            </th>
-            <th>
-               Fathers Name
-            </th>
-            <th>
-               Mothers Name
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Students Contact
-            </th>
-            <th>
-                Fathers Contact
-            </th>
-            <th>
-                Fathers Occupation
-            </th>
-            <th>
-                Student Password
-            </th>
-            <th>
-                <label>Marks</label>
-            </th>
-            <th>
-                <label>Actions</label>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentRollNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dob)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FatherFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MotherFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StudentContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FatherSContactNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FatherSOccupation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @if (item.IsMarkadded == true)
-                {
-                    <label class="text-info">Added</label>
-                }
-                else
-                {
-                    <label class="text-warning">Not added</label>
-                }
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "StudentAddandEdit", new { rollno = item.StudentRollNo }, new { @class = "btn btn-warning btn-block btn-lg" })
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "StudentDelete", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-block btn-lg", onclick = "return confirm('Are you want to delete');" })
-            </td>
-            <td>
-                @Html.ActionLink("Schedule Test", "ScheduleTest", new { rollno = item.StudentRollNo }, new { @class = "btn btn-danger btn-lg"})
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-                </div>
-            </div>
-@if (TempData["ExcelNotify"] != null)
+@if (TempData["ExcelNotifhy"] != null)
 {
     <script type="text/javascript">
-        alert("@TempData["ExcelNotify"]");
+        alert("@TempData["ExcelNotifhy"]");
     </script>
 }
-@if (TempData["nodataforEdit"] != null)
-{
-    <span class="alert alert-info"> @TempData["nodataforEdit"]</span>
-}
-@*[a - zA - Z0 - 9\s_\\.\-:]) + (.pdf |.tif |.png |.jpg)$*@

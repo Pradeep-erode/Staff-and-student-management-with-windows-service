@@ -39,17 +39,19 @@
                             </div>
                             <div class="form-group">
                                 <label>Gender<span>*</span></label>
-                                <div>
+                               <div style="padding: .375rem .75rem;">
                                     <label>Male</label>
                                     @Html.RadioButtonFor(m => m.Gender, "Male")
-                                    <label>Female</label>
+                                    <label class="ml-2">Female</label>
                                     @Html.RadioButtonFor(m => m.Gender, "Female")
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Date of birth<span>*</span></label>
-                                @Html.EditorFor(m => m.Dob, new { @class = "form-control", type = "date" })
-                            </div>
+                                <div style="padding: .110rem .75rem;">
+                                    @Html.EditorFor(m => m.Dob, "", new { type = "date" })
+                                    </div>
+                                </div>
                             <div class="form-group">
                                 <label>Father First name<span>*</span></label>
                                 @Html.TextBoxFor(m => m.FatherFirstName, "", new { @class = "form-control" })
@@ -74,11 +76,11 @@
                             </div>
                             <div class="form-group">
                                 <label>Student contact no<span>*</span></label>
-                                @Html.TextBoxFor(m => m.StudentContactNo, "", new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.StudentContactNo, "", new { @id = "studcontact",@class = "form-control" })
                             </div>
                             <div class="form-group">
                                 <label>Fathers contact no<span>*</span></label>
-                                @Html.TextBoxFor(m => m.FatherSContactNo, "", new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.FatherSContactNo, "", new { @id = "fathercontact",@class = "form-control" })
                             </div>
                             <div class="form-group">
                                 <label>Fathers occupation<span>*</span></label>
@@ -89,16 +91,16 @@
 
                     if (Model.StudentRollNo > 0)
                     {
-                        <button type="submit" onclick="SubmitDetails()" class="btn btn-default btn-lg btn-block btn-success" id="updatespin" style="display:block">Update</button>
+                        <button type="submit" onclick="SubmitDetails()" class="btn btn-default btn-lg btn-success" id="updatespin">Update</button>
                         @*for spinning==<button class="spin btn btn-lg btn-success btn-block" style="display:none">
                                 update<span class="spinner-border spinner-border-sm"></span>
                             </button>*@
                     }
                     else
                     {
-                        <button type="submit" onclick="SubmitDetails()" class="btn btn-default btn-lg btn-block btn-success" id="btnsubmita">Submit</button>
+                        <button type="submit" onclick="SubmitDetails()" class="btn btn-lg btn-success" id="btnsubmita">Submit</button>
                     }
-                    <button type="reset" class="btn btn-default btn-lg btn-block btn-warning">Reset</button>
+                    <button type="reset" class="btn btn-default btn-lg btn-warning">Reset</button>
                 }
             </div>
         </div>

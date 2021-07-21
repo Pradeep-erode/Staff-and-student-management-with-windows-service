@@ -27,7 +27,7 @@ namespace staffstudent.Entities
         [StringLength(6)]
         public string Gender { get; set; }
         [Column("DOB", TypeName = "date")]
-        public DateTime Dob { get; set; }
+        public DateTime? Dob { get; set; }
         [Required]
         [Column("Father_First_name")]
         [StringLength(40)]

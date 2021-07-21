@@ -3,20 +3,33 @@
     <div class="row container">
         <div class="col">
             <div class="form-group">
-                <h3>Student Roll number</h3>
-                @Html.DisplayFor(m => m.Student_Roll_no)
-            </div><div class="form-group">
-                <h3>Subject</h3>
-                @Html.DropDownList("Subject", new List<SelectListItem>
-        { new SelectListItem{ Text="Tamil",Value="Tamil"},
-        new SelectListItem{ Text="English",Value="English"},
-        new SelectListItem{ Text="Science",Value="Science"},
-        new SelectListItem{ Text="Maths",Value="Maths"} }, "Select subject to schedule..")
-            </div><div class="form-group">
-                <h3>Scheduled Time</h3>
-                @Html.TextBoxFor(m => m.ScheduledTime, new { type = "date" })
+
+
             </div>
-            <button class="btn btn-block btn-lg btn-success">Schedule</button>
+            @using (Html.BeginForm("ScheduleTestformail", "Staffmanagement", FormMethod.Post))
+            {
+                <h3>Student Roll number</h3>
+                @Html.HiddenFor(m => m.Student_Roll_no)
+                <div class="form-group">
+                    <h3>Subject</h3>
+                    @Html.DropDownList("Subject", new List<SelectListItem>
+            { new SelectListItem{ Text="Tamil",Value="Tamil"},
+            new SelectListItem{ Text="English",Value="English"},
+            new SelectListItem{ Text="Science",Value="Science"},
+            new SelectListItem{ Text="Maths",Value="Maths"} }, "Select subject to schedule..")
+                </div><div class="form-group">
+                    <h3>Scheduled Time</h3>
+                    @Html.EditorFor(m => m.ScheduledTime)
+                </div>
+                <button class="btn btn-lg btn-success" type="submit">Schedule</button>
+            }
         </div>
     </div>
     </div>
+
+@if (TempData["nodata"] != null)
+{
+    <script>
+        alert("@TempData["nodata"]");
+        </script>
+}
