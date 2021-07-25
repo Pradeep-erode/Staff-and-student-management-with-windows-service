@@ -1,7 +1,9 @@
 ﻿using LamarCodeGeneration.Frames;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Staff_and_student.Utilities;
 using staffstudent.Core.staffEntity;
 using System;
 using System.Collections.Generic;
@@ -18,13 +20,13 @@ namespace Staff_and_student.Controllers
 {
     public class StaffmanagementController : Controller
     {
-        public object Schedular { get; private set; }
-
         #region  all login pages
         public IActionResult Mainpage()
         {
-           TempData[" logout"] = "logout not nessesary";
-           return View();
+            //var myKeyValue = _config["MyKey"];
+           // var connectionString = sdsw.GetConnectionString("ConnectionStrings:NorthwindDatabase");
+            TempData[" logout"] = "logout not nessesary";
+            return View();
         }
         public IActionResult Stafflogin()
         {
@@ -39,7 +41,7 @@ namespace Staff_and_student.Controllers
             //var lio = Timeout.Infinite;
 
             TempData[" logout"] = "logout not nessesary";
-          return View();
+            return View();
         }
         public IActionResult Studentlogin()
         {
@@ -72,7 +74,7 @@ namespace Staff_and_student.Controllers
                 return View();
             }
         }
-        #endregion
+        #endregion 
 
         #region Student login post
 
@@ -82,13 +84,11 @@ namespace Staff_and_student.Controllers
             if (ModelState.IsValid)
             {
                 StudentMarkEntity markdata = new StudentMarkEntity();
-                using (var client = new HttpClient())
+                using (var api = new StasffstudentAPI())
                 {
                     int roll = studencheck.StudentRollNo;
-                    string password= studencheck.Password;
-
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Studentcheck");
-                    var getindividual = client.GetAsync("?roll=" + roll + "&password=" + password);
+                    string password = studencheck.Password;
+                    var getindividual = api.GetAsync("Studentcheck?roll=" + roll + "&password=" + password);
                     getindividual.Wait();
                     var result = getindividual.Result;
                     if (result.IsSuccessStatusCode)
@@ -127,13 +127,15 @@ namespace Staff_and_student.Controllers
         #region student list dashhboard
         public ActionResult Studentdashboard()
         {
-            if (HttpContext.Session.GetString("credential") !=null)
-                {
-                using (var client = new HttpClient())
+            if (HttpContext.Session.GetString("credential") != null)
+            {
+                using (var api = new StasffstudentAPI())
                 {
                     List<StudentInformationEntity> studentlist = new List<StudentInformationEntity>();
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
-                    var gettask = client.GetAsync("Getstudentlist");
+
+                    //rather than putting our link directly we can call it in appsetting and use it.
+                    //client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
+                    var gettask = api.GetAsync("Getstudentlist");
                     gettask.Wait();
 
                     var result = gettask.Result;
@@ -179,12 +181,9 @@ namespace Staff_and_student.Controllers
             {
                 if (HttpContext.Session.GetString("credential") != null)
                 {
-
-
-                    using (var client = new HttpClient())
+                    using (var api = new StasffstudentAPI())
                     {
-                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/ScheduleMail/");
-                        var Posttask = client.PostAsJsonAsync(client.BaseAddress, mailschedule);
+                        var Posttask = api.PostAsJsonAsync("ScheduleMail/", mailschedule);
                         Posttask.Wait();
                         var checkresult = Posttask.Result;
                         if (checkresult.IsSuccessStatusCode)
@@ -237,21 +236,18 @@ namespace Staff_and_student.Controllers
 
                     if (fileupload.Filename.EndsWith(".xls") || fileupload.Filename.EndsWith(".xlsx"))
                     {
-                        using (var client = new HttpClient())
+                        using (var api = new StasffstudentAPI())
                         {
-                            client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/UploadExclel");
-                            //normal post method
+                            //old post method
                             //var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload);
-
                             //for getting value from post method
-                            var Posttask = client.PostAsJsonAsync(client.BaseAddress, fileupload).Result;
+                            var Posttask = api.PostAsJsonAsync("UploadExclel/", fileupload).Result;
                             //for getting int value
                             //var getint = Posttask.Content.ReadAsAsync<int>();
-
                             //for getting string value
+
                             var getint = Posttask.Content.ReadAsStringAsync();
-                           
-                            var errormessage=getint.Result;
+                            var errormessage = getint.Result;
 
                             TempData["ExcelNotify"] = errormessage;
                             return RedirectToAction("Studentdashboard");
@@ -324,12 +320,10 @@ namespace Staff_and_student.Controllers
                 if (rollno > 0)
                 {
 
-                    using (var client = new HttpClient())
+                    using (var api = new StasffstudentAPI())
                     {
-
-
-                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Getstudentbyrollno/");
-                        var getforedit = client.GetAsync("?rollno=" + rollno);
+                        //client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Getstudentbyrollno/");
+                        var getforedit = api.GetAsync("Getstudentbyrollno?rollno=" + rollno);
                         getforedit.Wait();
                         var result = getforedit.Result;
                         if (result.IsSuccessStatusCode)
@@ -363,10 +357,10 @@ namespace Staff_and_student.Controllers
         {
             if (HttpContext.Session.GetString("credential") != null)
             {
-                using (var client = new HttpClient())
+                using (var api = new StasffstudentAPI())
                 {
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Addstudentdetail/");
-                    var Posttask = client.PostAsJsonAsync(client.BaseAddress, studentinfo);
+                    //client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Addstudentdetail/");
+                    var Posttask = api.PostAsJsonAsync("Addstudentdetail/", studentinfo);
                     Posttask.Wait();
                     var checkresult = Posttask.Result;
                     if (checkresult.IsSuccessStatusCode)
@@ -393,12 +387,12 @@ namespace Staff_and_student.Controllers
         {
             if (HttpContext.Session.GetString("credential") != null)
             {
-                using (var client = new HttpClient())
+                using (var api = new StasffstudentAPI())
                 {
                     List<StudentMarkEntity> markadd = new List<StudentMarkEntity>();
 
-                    client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
-                    var getforedit = client.GetAsync("GetstudentMarkList");
+                    //client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/");
+                    var getforedit = api.GetAsync("GetstudentMarkList");
                     getforedit.Wait();
                     var checkresult = getforedit.Result;
                     if (checkresult.IsSuccessStatusCode)
@@ -433,7 +427,7 @@ namespace Staff_and_student.Controllers
             {
                 return RedirectToAction("Stafflogin");
             }
-            
+
         }
         #endregion
 
@@ -448,10 +442,10 @@ namespace Staff_and_student.Controllers
                 }
                 else
                 {
-                    using (var client = new HttpClient())
+                    using (var api = new StasffstudentAPI())
                     {
-                        client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Deletestudentbyrollno/");
-                        var deletetask = client.DeleteAsync("?rollno=" + rollno);
+                        //client.BaseAddress = new Uri("https://localhost:44322/api/StaffAPI/Deletestudentbyrollno/");
+                        var deletetask = api.DeleteAsync("Deletestudentbyrollno?rollno=" + rollno);
                         deletetask.Wait();
 
                         var result = deletetask.Result;

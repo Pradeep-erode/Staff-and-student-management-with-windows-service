@@ -157,11 +157,16 @@ namespace staff_student_API.Controllers
         }
         #endregion
 
+        #region Schedule Mail Post method
+
         [HttpPost]
         public ActionResult ScheduleMail(StudentMarkEntity ScheduleMail)
         {
             _Iservicestaff.ScheduleMail(ScheduleMail);
             return Ok();
         }
+
+        #endregion
+
     }
 }

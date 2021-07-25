@@ -62,8 +62,8 @@ namespace Mail_scheduler_service
             //int x;
             ts = t - DateTime.Now;  
             if (ts.TotalMilliseconds < 0)
-            {
-                ts = t.AddSeconds(60) - DateTime.Now;  //Here you can increase the timer interval based on your requirments.   
+            { 
+                ts = t.AddDays(2) - DateTime.Now;  //Here you can increase the timer interval based on your requirments.   
             }
             return ts.TotalMilliseconds;
         }
@@ -88,6 +88,8 @@ namespace Mail_scheduler_service
             Mail_sender.SendEmail();
             if (getCallType == 1)
             {
+                //by setting you intervel 1 minutes it is working on every 1 minutes
+                _timer1.Interval = 60000;
                 _timer1.Start();//setting timer1.Enabled = false;
                 //System.Threading.Thread.Sleep(10000);  // //we just waiting for 16 minute here because we know a specific timespan when we should continue.
                 //SetTimer();

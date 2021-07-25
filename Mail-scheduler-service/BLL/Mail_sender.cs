@@ -31,7 +31,6 @@ namespace Mail_scheduler_service.BLL
             {
             }
         }
-        // This function write Message to log file.
         public static void WriteErrorLog(string Message)
         {
             StreamWriter sw = null;
@@ -46,7 +45,6 @@ namespace Mail_scheduler_service.BLL
             {
             }
         }
-        // This function contains the logic to send mail.
         public static void SendEmail()
         {
             #region connection string
@@ -99,21 +97,22 @@ namespace Mail_scheduler_service.BLL
 
             try
             {
-                MailData hia = new MailData();
-                var list = hia.GetStudentmail();
-                foreach (var info in list)
+                MailData mailData = new MailData();
+                var datalist = mailData.GetStudentdata();
+                foreach (var studentdata in datalist)
                 {
-                    //var date = info.Date.Value.AddMinutes(10);
-                    //string dates = string.Format("{0}/{1}/{2}", date.Day,date.Month,date.Year);
-                    //string times= string.Format("{0}/{1}", date.Hour, date.Minute);
-                    //string datess = string.Format("{0}/{1}/{2}", DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year);
-                    //string timess = string.Format("{0}/{1}", DateTime.Now.Hour, DateTime.Now.Minute);
+                    var nowdate = DateTime.Now.AddMinutes(10);
+                    var scheduledate = studentdata.Date.Value;
+                    string dateschedule = string.Format("{0}/{1}/{2}", scheduledate.Day, scheduledate.Month, scheduledate.Year);
+                    string scheduletime = string.Format("{0}/{1}", scheduledate.Hour, scheduledate.Minute);
+                    string datenow = string.Format("{0}/{1}/{2}", nowdate.Day, nowdate.Month, nowdate.Year);
+                    string timenow = string.Format("{0}/{1}", nowdate.Hour, nowdate.Minute);
 
-                    if (info.Date == DateTime.Now) 
+                    if (dateschedule == datenow && scheduletime == timenow)
                     {
-                        var Tomail = info.Email;
-                        string name = info.Name;
-                        string subject = info.Subject;
+                        var Tomail = studentdata.Email;
+                        string studentname = studentdata.Name;
+                        string testsubject = studentdata.Subject;
 
                         try
                         {
@@ -122,8 +121,8 @@ namespace Mail_scheduler_service.BLL
                             smtpClient.Timeout = 200000; //try to send mail for 200 seconds after it hit the catch exception.
                             MailMessage MailMsg = new MailMessage();
                             System.Net.Mime.ContentType HTMLType = new System.Net.Mime.ContentType("text/html");
-
-                            string strBody = string.Format("Hi,{0} be ready for your {1} test...!!!", name, subject);
+                            
+                            string strBody = string.Format("Hi,{0} be ready for your {1} test scheduled at {2}...!!!", studentname, testsubject, scheduledate);
 
                             MailMsg.BodyEncoding = Encoding.Default;
                             MailMsg.To.Add(Tomail);
@@ -141,14 +140,11 @@ namespace Mail_scheduler_service.BLL
                             WriteErrorLog("Mail not sended...");
                             throw;
                         }
-
                     }
                     else
                     {
                         WriteErrorLog("Wait for sometime...!!!");
                     }
-
-
                 }
             }
             catch (Exception exe)

@@ -11,9 +11,9 @@ namespace Mail_scheduler_service.DLL.Datalogic
 {
     public class MailData
     {
-        public List<Studentdata> GetStudentmail()
+        public List<Studentdata> GetStudentdata()
         {
-            List<Studentdata> listof = new List<Studentdata>();
+            List<Studentdata> listofdata = new List<Studentdata>();
 
             using (var entity = new StaffmanagementEntitiesss())
             {
@@ -26,10 +26,10 @@ namespace Mail_scheduler_service.DLL.Datalogic
                     datamodel.Email = lista.Email;
                     datamodel.Subject = datas.Subject;
                     datamodel.Date = datas.Scheduled_time;
-                    listof.Add(datamodel);
+                    listofdata.Add(datamodel);
                 }
             }
-            return listof;
+            return listofdata;
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using LinqToExcel;
+﻿using Dapper;
+using LinqToExcel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
 using staffstudent.Core.IRepository;
 using staffstudent.Core.staffEntity;
 using staffstudent.Entities;
@@ -17,6 +21,14 @@ namespace staffstudent.Resources.staffRepository
 {
     public class StaffRepository : IRepositoryStaff
     {
+        //As it inherits IRepositoryStaff its take appsettings.json in API through Dependency Injection
+
+        private readonly IConfiguration _config;
+        public StaffRepository(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
+
         #region Student login check
         public StudentMarkEntity Studentcheck(int roll, string password)
         {
@@ -40,9 +52,32 @@ namespace staffstudent.Resources.staffRepository
         }
         #endregion
 
-        #region Getstudentlist for dashboard
+        #region Getstudentlist for dashboard and dapper method
         public List<StudentInformationEntity> Getstudentlist()
         {
+            #region Dapper
+
+            var connectionString = _config.GetConnectionString("NorthwindDatabase");
+           // also we use like this==> var connectionStringa = _config["ConnectionStrings:NorthwindDatabase"];
+
+            string query = "SELECT * FROM Student_Information";
+            SqlConnection con;
+            con = new SqlConnection(connectionString);
+            con.Open();
+            IList <StudentInformationEntity> EmpList = SqlMapper.Query<StudentInformationEntity>(
+                                  con, query).ToList();
+            con.Close();
+            //In stored procedure,
+            // IList<StudentInformationEntity> EmpList = SqlMapper.Query<StudentInformationEntity>(
+            //                    con, "GetEmployees").ToList();
+
+
+            //IDbConnection db2 = new SqlConnection(ConfigurationManager.ConnectionStrings["SqlServerConnString"].ConnectionString);
+            //using (var db = new SqlConnection(connectionString))
+            //    return db.Query<StudentInformationEntity>(query).AsList();
+
+            #endregion
+
             List<StudentInformationEntity> listofstudent = new();
             using (var _context = new StaffmanagementContext())
             {
