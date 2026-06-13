@@ -2,5 +2,5 @@ Business: Student mark entry website with separate Admin access, with an Excel s
 
 
 Technologies: 
-Web & API- .NET Core 5.0
+Web & API- .NET Core 5.0,
 Windows Service - .NET Framework 4.7.2
